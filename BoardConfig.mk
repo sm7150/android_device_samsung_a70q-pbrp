@@ -1,18 +1,6 @@
-#
-# Copyright (C) 2019 The TwrpBuilder Open-Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# Device
+DEVICE_PATH := device/samsung/a70q
+ALLOW_MISSING_DEPENDENCIES := true
 
 # Architecture
 TARGET_ARCH := arm64
@@ -31,8 +19,6 @@ TARGET_USES_64_BIT_BINDER := true
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
-ALLOW_MISSING_DEPENDENCIES := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sm6150
 TARGET_NO_BOOTLOADER := true
@@ -43,31 +29,38 @@ TARGET_BOARD_PLATFORM := sm6150
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno612
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3 nokaslr printk.devkmsg=on androidboot.vbmeta.avb_version=1.0 androidboot.avb_version=1.0
-BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_CMDLINE     := console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1
+BOARD_KERNEL_CMDLINE     += video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1
+BOARD_KERNEL_CMDLINE     += swiotlb=1 androidboot.usbcontroller=a600000.dwc3
+BOARD_KERNEL_CMDLINE     += firmware_class.path=/vendor/firmware_mnt/image nokaslr printk.devkmsg=on loop.max_part=7
+BOARD_KERNEL_CMDLINE     += androidboot.avb_version=1.0 androidboot.vbmeta.avb_version=1.0
+BOARD_KERNEL_CMDLINE     += androidboot.selinux=permissive
+BOARD_KERNEL_BASE        := 0x00000000
+BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_OFFSET      := 0x00008000
 BOARD_KERNEL_TAGS_OFFSET := 0x01e00000
 BOARD_RAMDISK_OFFSET     := 0x02000000
 BOARD_SECOND_OFFSET      := 0x00f00000
 BOARD_NAME               := SRPRL06C001
 BOARD_HEADER_VERSION     := 1
-BOARD_MKBOOTIMG_ARGS     := --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET) --second_offset $(BOARD_SECOND_OFFSET) --header_version $(BOARD_HEADER_VERSION) --board $(BOARD_NAME)
-BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
+BOARD_MKBOOTIMG_ARGS     := --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS     += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET) --header_version $(BOARD_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS     += --second_offset $(BOARD_SECOND_OFFSET) --board $(BOARD_NAME)
+BOARD_KERNEL_IMAGE_NAME  := Image.gz-dtb
+TARGET_KERNEL_ARCH       := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_SOURCE := kernel/samsung/a70q
-TARGET_KERNEL_CONFIG := a70q_defconfig
-BOARD_KERNEL_SEPARATED_DTBO := true
-TARGET_KERNEL_CLANG_COMPILE := true
+BOARD_INCLUDE_RECOVERY_DTBO := true
 
-# QCOM
-TARGET_USE_SDCLANG := true
+# Kernel Prebuilts
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
 # Avb
 BOARD_AVB_ENABLE := true
 BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+
+# Assert
+TARGET_OTA_ASSERT_DEVICE := a70q
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144
@@ -103,6 +96,10 @@ LZMA_RAMDISK_TARGETS := recovery
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
 
+# Hack: prevent anti rollback
+PLATFORM_SECURITY_PATCH := 2099-12-31
+PLATFORM_VERSION := 16.1.0
+
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA := true
@@ -122,3 +119,13 @@ TW_H_OFFSET := -77
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone16/temp"
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
 TW_SCREEN_BLANK_ON_BOOT := true
+
+# TWRP Loggings
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+
+# TWRP & PB Other Flags
+PB_DISABLE_DEFAULT_DM_VERITY := true
+BETA_BUILD := true
+TW_EXCLUDE_TWRPAPP := true
+TW_DEVICE_VERSION := FireKernelFamily
