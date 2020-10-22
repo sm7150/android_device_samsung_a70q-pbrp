@@ -16,9 +16,10 @@
 /modem         vfat   /dev/block/bootdevice/by-name/modem
 /firmware      vfat   /dev/block/bootdevice/by-name/apnhlos                   flags=display="Firmware";fsflags=ro
 /misc          emmc   /dev/block/bootdevice/by-name/misc
-/dtbo          emmc   /dev/block/bootdevice/by-name/dtbo                      flags=display="Dtbo";backup=1
+/dtbo          emmc   /dev/block/bootdevice/by-name/dtbo                      flags=display="Dtbo";backup=1;flashimg=1
 /efs           ext4   /dev/block/bootdevice/by-name/sec_efs
 /product       ext4   /dev/block/bootdevice/by-name/product
+/vbmeta_image  emmc   /dev/block/bootdevice/by-name/vbmeta                    flags=display="Vbmeta";flashimg=1
 
 # Removable storage
 /external_sd   vfat   /dev/block/mmcblk0p1               /dev/block/mmcblk0   flags=display="Micro SDcard";storage;wipeingui;removable;encryptable=footer;length=-16384
