@@ -1,6 +1,7 @@
 # Device
 DEVICE_PATH := device/samsung/a70q
 ALLOW_MISSING_DEPENDENCIES := true
+BUILD_BROKEN_DUP_RULES := true
 
 # Architecture
 TARGET_ARCH := arm64
@@ -126,6 +127,6 @@ TARGET_USES_LOGD := true
 
 # TWRP & PB Other Flags
 PB_DISABLE_DEFAULT_DM_VERITY := true
-BETA_BUILD := true
+PBRP_BUILD_TYPE := UNOFFICIAL
 TW_EXCLUDE_TWRPAPP := true
 TW_DEVICE_VERSION := FireKernelFamily
