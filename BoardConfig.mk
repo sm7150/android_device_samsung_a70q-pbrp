@@ -1,7 +1,6 @@
 # Device
 DEVICE_PATH := device/samsung/a70q
 ALLOW_MISSING_DEPENDENCIES := true
-BUILD_BROKEN_DUP_RULES := true
 
 # Architecture
 TARGET_ARCH := arm64
@@ -90,16 +89,10 @@ TARGET_COPY_OUT_VENDOR := vendor
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_INCLUDE_RECOVERY_DTBO := true
 LZMA_RAMDISK_TARGETS := recovery
-
-# Crypto
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_FBE := true
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
 
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
